@@ -8,8 +8,10 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class JPAExample {
 
@@ -24,20 +26,31 @@ public class JPAExample {
             e.printStackTrace();
         }
 
-        Klass classBp2 = new Klass("Budapest 2016-2");
+        List<String> phoneNumbers = new ArrayList<>();
+        phoneNumbers.add("2323424");
+        phoneNumbers.add("21345532");
+
+        Klass classBp2 = new Klass("Budapest 2016-2", CCLocation.BUDAPEST);
         Address address = new Address("Hungary", "1234", "Budapest", "Macskakő út 5.");
-        Student student = new Student("Ödön", "odon@tokodon.hu", birthDate1, address);
+        Student student = new Student("Ödön", "odon@tokodon.hu", birthDate1, address, phoneNumbers);
+        address.setStudent(student);
         classBp2.addStudent(student);
 
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
+        em.persist(classBp2);
         em.persist(address);
         em.persist(student);
         transaction.commit();
         System.out.println("Ödön saved.");
 
+        List<String> phoneNumbers2 = new ArrayList<>();
+        phoneNumbers2.add("232343324");
+        phoneNumbers2.add("213452342532");
+
         Address address2 = new Address("Hungary", "6789", "Budapest", "Harap u. 3.");
-        Student student2 = new Student("Aladár", "ktyfl@gmail.com", birthDate2, address);
+        Student student2 = new Student("Aladár", "ktyfl@gmail.com", birthDate2, address2, phoneNumbers2);
+        address2.setStudent(student2);
         classBp2.addStudent(student2);
 
         transaction.begin();
